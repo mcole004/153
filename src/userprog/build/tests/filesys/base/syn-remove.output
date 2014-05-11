@@ -1,0 +1,38 @@
+Copying tests/filesys/base/syn-remove to scratch partition...
+qemu -hda /tmp/Pf7POp_lJ4.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q -f extract run syn-remove
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer... 78,540,800 loops/s.
+hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 96 sectors (48 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'syn-remove' into the file system...
+Erasing ustar archive...
+Executing 'syn-remove':
+(syn-remove) begin
+(syn-remove) create "deleteme"
+(syn-remove) open "deleteme"
+(syn-remove) remove "deleteme"
+Kernel PANIC at ../../userprog/syscall.c:82 in syscall_handler(): assertion `false' failed.
+Call stack: 0xc0028549 0xc002bf17 0xc0021a54 0xc0021b8b 0x804a463 0x8048142 0x80489f4 0x8048a20.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 257 ticks
+Thread: 0 idle ticks, 248 kernel ticks, 9 user ticks
+hda2 (filesys): 89 reads, 203 writes
+hda3 (scratch): 95 reads, 2 writes
+Console: 1251 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

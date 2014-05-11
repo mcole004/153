@@ -1,0 +1,43 @@
+Copying tests/userprog/exec-arg to scratch partition...
+Copying tests/userprog/child-args to scratch partition...
+qemu -hda /tmp/jJpBBjTi8l.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q -f extract run exec-arg
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer... 78,540,800 loops/s.
+hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 181 sectors (90 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'exec-arg' into the file system...
+Putting 'child-args' into the file system...
+Erasing ustar archive...
+Executing 'exec-arg':
+(exec-arg) begin
+Page fault at 0x804a730: rights violation error writing page in kernel context.
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc00276d3
+ cr2=0804a730 error=00000003
+ eax=c00309cd ebx=0804a730 ecx=00000020 edx=00000020
+ esi=0804a726 edi=c00309cd esp=c00309cd ebp=c010aec4
+ cs=0008 ds=0010 es=0010 ss=0020
+Kernel PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b8cb 0xc002be25 0xc0021a54 0xc0021b8b 0x804a13e 0x80480b2 0x80480ec 0x8048728.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 410 ticks
+Thread: 0 idle ticks, 408 kernel ticks, 2 user ticks
+hda2 (filesys): 87 reads, 368 writes
+hda3 (scratch): 180 reads, 2 writes
+Console: 1594 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

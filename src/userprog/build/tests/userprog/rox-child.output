@@ -1,0 +1,47 @@
+Copying tests/userprog/rox-child to scratch partition...
+Copying tests/userprog/child-rox to scratch partition...
+qemu -hda /tmp/2iUjbSXKaC.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q -f extract run rox-child
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer... 78,540,800 loops/s.
+hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
+hda1: 147 sectors (73 kB), Pintos OS kernel (20)
+hda2: 4,096 sectors (2 MB), Pintos file system (21)
+hda3: 194 sectors (97 kB), Pintos scratch (22)
+filesys: using hda2
+scratch: using hda3
+Formatting file system...done.
+Boot complete.
+Extracting ustar archive from scratch device into file system...
+Putting 'rox-child' into the file system...
+Putting 'child-rox' into the file system...
+Erasing ustar archive...
+Executing 'rox-child':
+(rox-child) begin
+(rox-child) open "child-rox"
+(rox-child) read "child-rox"
+(rox-child) write "child-rox"
+(rox-child) exec "child-rox 1"
+Page fault at 0x804a8bd: rights violation error writing page in kernel context.
+Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc00276d3
+ cr2=0804a8bd error=00000003
+ eax=c00309cd ebx=0804a8bd ecx=00000020 edx=00000020
+ esi=0804a8b4 edi=c00309cd esp=c00309cd ebp=c010aec4
+ cs=0008 ds=0010 es=0010 ss=0020
+Kernel PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b8cb 0xc002be25 0xc0021a54 0xc0021b8b 0x804a28e 0x804816b 0x8048234 0x8048878.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 429 ticks
+Thread: 0 idle ticks, 425 kernel ticks, 4 user ticks
+hda2 (filesys): 94 reads, 395 writes
+hda3 (scratch): 193 reads, 2 writes
+Console: 1716 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

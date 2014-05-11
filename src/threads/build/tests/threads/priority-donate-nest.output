@@ -1,0 +1,17 @@
+qemu -hda /tmp/CvsVHekD3w.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading........
+Kernel command line: -q run priority-donate-nest
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Kernel PANIC at ../../lib/kernel/list.c:282 in list_front(): assertion `!list_empty (list)' failed.
+Call stack: 0xc00283d9 0xc002908d 0xc00290a8 0xc0020d43 0xc0020ffd 0xc0021126 0xc0020685.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 0 ticks
+Thread: 0 idle ticks, 0 kernel ticks, 0 user ticks
+Console: 565 characters output
+Keyboard: 0 keys pressed
+Powering off...
