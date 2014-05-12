@@ -1,13 +1,13 @@
 Copying tests/userprog/write-boundary to scratch partition...
 Copying ../../tests/userprog/sample.txt to scratch partition...
-qemu -hda /tmp/XndYIBpLBY.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/U1hkQc0Z_4.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run write-boundary
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
 383 pages available in user pool.
-Calibrating timer... 78,540,800 loops/s.
+Calibrating timer... 52,377,600 loops/s.
 hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
@@ -26,8 +26,8 @@ Executing 'write-boundary':
 (write-boundary) end
 write-boundary: exit(0)
 Execution of 'write-boundary' complete.
-Timer: 255 ticks
-Thread: 0 idle ticks, 253 kernel ticks, 2 user ticks
+Timer: 269 ticks
+Thread: 0 idle ticks, 268 kernel ticks, 1 user ticks
 hda2 (filesys): 94 reads, 203 writes
 hda3 (scratch): 97 reads, 2 writes
 Console: 998 characters output

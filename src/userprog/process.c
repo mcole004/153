@@ -61,7 +61,7 @@ start_process (void *file_name_)
   struct intr_frame if_;
   bool success;
 ///////////////////////////
-
+					
   char *saveptr;
 file_name = strtok_r((char*)file_name, " ", &saveptr);
 
@@ -73,7 +73,7 @@ file_name = strtok_r((char*)file_name, " ", &saveptr);
   if_.eflags = FLAG_IF | FLAG_MBS;
   success = load (file_name, &if_.eip, &if_.esp, &saveptr);
 //////////////////////////////////////
- 
+						//this is for child processes 
 /* if(success)
 	{
 	thread_current()->load = LOADED; /////childproccess?
@@ -110,17 +110,21 @@ else
 int
 process_wait (tid_t child_tid) 
 {
+	//check if the tid is null or exceptions
 	if(child_tid > 0xffff || child_tid < 0) return -1;
 	int stats=0;
+	//check if the thread is running, ready, or blocked
 	while(stats==THREAD_RUNNING ||stats ==THREAD_READY || stats ==THREAD_BLOCKED)
 	{
+		//function Located in THREAD.H/C
+		//thread check traverses the list of threads and returns the thread with the same child_pid
 		struct thread *t = thread_check(child_tid);
-		if(t)
+		if(t)//if it exists wait for the thread to finish its just
 		{
 			thread_yield();
 			stats = t->status;
 		}
-		else
+		else//if it doesnt exist break out of loop and return stats = 0;
 		{ 
 			break;
 		}
@@ -139,7 +143,7 @@ process_exit (void)
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
   pagedirectory = current->pagedir;
-  if (pagedirectory != NULL) 
+  if (pagedirectory != NULL) //check to make sure the current page directory exists
     {
       /* Correct ordering here is crucial.  We must set
          cur->pagedir to NULL before switching page directories,
@@ -148,7 +152,7 @@ process_exit (void)
          directory before destroying the process's page
          directory, or our active page directory will be one
          that's been freed (and cleared). */
-      current->pagedir = NULL;
+      current->pagedir = NULL; //if it exists, destroy it
       pagedir_activate (NULL);
       pagedir_destroy (pagedirectory);
     }
@@ -251,8 +255,6 @@ load (const char *file_name, void (**eip) (void), void **esp, char **saveptr)
   struct Elf32_Ehdr ehdr;
   struct file *file = NULL;
   off_t file_ofs;
-  bool success = false;
-  int i;
 
   /* Allocate and activate page directory. */
   t->pagedir = pagedir_create ();
@@ -281,6 +283,7 @@ load (const char *file_name, void (**eip) (void), void **esp, char **saveptr)
       goto done; 
     }
 
+  int i;
   /* Read program headers. */
   file_ofs = ehdr.e_phoff;
   for (i = 0; i < ehdr.e_phnum; i++) 
@@ -340,6 +343,7 @@ load (const char *file_name, void (**eip) (void), void **esp, char **saveptr)
         }
     }
 
+  bool loaded = false;
   /* Set up stack. */
   if (!setup_stack (esp, file_name, saveptr))
     goto done;
@@ -347,12 +351,12 @@ load (const char *file_name, void (**eip) (void), void **esp, char **saveptr)
   /* Start address. */
   *eip = (void (*) (void)) ehdr.e_entry;
 
-  success = true;
+  loaded = true;
 
  done:
   /* We arrive here whether the load is successful or not. */
   file_close (file);
-  return success;
+  return loaded;
 }
 
 /* load() helpers. */
@@ -499,9 +503,9 @@ for(token = (char*) file_name; token != NULL; token = strtok_r(NULL, " ", savept
 {	
 //	*esp -= strlen(token) +1;
 //	counter += strlen(token)+1;
-	cont[argc] = token;
+	cont[argc] = token; //this array holds the arguments in the opposite order. ARGV is the same but will hold the arguments in the correct order
 	argc++;
-	if(argc >= argv_size)
+	if(argc >= argv_size) //adjust the size of the array as needed
 	{
 		argv_size *= 2;
 		cont = realloc(cont, argv_size*sizeof(char *));
@@ -511,10 +515,10 @@ for(token = (char*) file_name; token != NULL; token = strtok_r(NULL, " ", savept
 }
 
 int j;
-for(j = argc - 1; j>=0; j--)
+for(j = argc - 1; j>=0; j--) //switch the order of cont and put it into argv
 {
 	*esp -= strlen(cont[j]) + 1;
-	counter += strlen(cont[j]) + 1;
+	counter += strlen(cont[j]) + 1; //counter gets the exact size of the arguments added
 	argv[j] = *esp;
 	memcpy(*esp, cont[j], strlen(cont[j]) + 1);
 }
@@ -534,6 +538,7 @@ for(k = argc; k >= 0; k--)
 	counter += sizeof(char *);
 	memcpy(*esp, &argv[k], sizeof(char *));
 }
+//check the type of argments that are being passed in 
 token = *esp;
 *esp -= sizeof(char **);
 counter += sizeof(char **);
@@ -548,8 +553,8 @@ counter += sizeof(void *);
 memcpy(*esp, &argv[argc], sizeof(void *));
 	free(cont); 
 	free(argv);
-//hex_dump(0, thread_current()->stack, sizeof(thread_current()->stack), true);//hexdump stack
-//hex_dump(0, *esp, counter, true);//hexdump stack
+//hex_dump(0, thread_current()->stack, sizeof(thread_current()->stack), true);//hexdump stack //DO NOT USE
+//hex_dump(0, *esp, counter, true);//hexdump stack    //If testing individual tests, use this, otherwise keep this commented out
 
 return success;
 }

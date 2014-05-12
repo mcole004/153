@@ -1,12 +1,12 @@
 Copying tests/userprog/close-bad-fd to scratch partition...
-qemu -hda /tmp/Yzo8x_39wA.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/dk5Ln5BLnk.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run close-bad-fd
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
 383 pages available in user pool.
-Calibrating timer... 52,736,000 loops/s.
+Calibrating timer... 78,540,800 loops/s.
 hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
@@ -23,8 +23,8 @@ Executing 'close-bad-fd':
 (close-bad-fd) end
 close-bad-fd: exit(0)
 Execution of 'close-bad-fd' complete.
-Timer: 252 ticks
-Thread: 0 idle ticks, 252 kernel ticks, 0 user ticks
+Timer: 251 ticks
+Thread: 0 idle ticks, 249 kernel ticks, 2 user ticks
 hda2 (filesys): 61 reads, 188 writes
 hda3 (scratch): 91 reads, 2 writes
 Console: 904 characters output

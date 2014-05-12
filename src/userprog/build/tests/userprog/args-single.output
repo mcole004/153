@@ -1,5 +1,5 @@
 Copying tests/userprog/args-single to scratch partition...
-qemu -hda /tmp/ydh395S9X1.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/qCBhuTgjJr.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run 'args-single onearg'
@@ -27,8 +27,8 @@ Executing 'args-single onearg':
 (args) end
 args-single: exit(0)
 Execution of 'args-single' complete.
-Timer: 230 ticks
-Thread: 0 idle ticks, 229 kernel ticks, 1 user ticks
+Timer: 252 ticks
+Thread: 0 idle ticks, 251 kernel ticks, 1 user ticks
 hda2 (filesys): 63 reads, 186 writes
 hda3 (scratch): 90 reads, 2 writes
 Console: 995 characters output

@@ -1,17 +1,1 @@
-FAIL
-Kernel panic in run: PANIC at ../../userprog/syscall.c:82 in syscall_handler(): assertion `false' failed.
-Call stack: 0xc0028549 0xc002bf17 0xc0021a54 0xc0021b8b 0x804a463 0x8048142 0x80489f4 0x8048a20
-Translation of call stack:
-In kernel.o:
-0xc0028549: debug_panic (.../../lib/kernel/debug.c:38)
-0xc002bf17: syscall_handler (.../../userprog/syscall.c:88)
-0xc0021a54: intr_handler (..../threads/interrupt.c:367)
-0xc0021b8b: intr_entry (threads/intr-stubs.S:38)
-In tests/filesys/base/syn-remove:
-0x0804a463: remove (...../lib/user/syscall.c:103)
-0x08048142: test_main (...esys/base/syn-remove.c:21)
-0x080489f4: main (...ild/../../tests/main.c:13)
-0x08048a20: _start (.../../../lib/user/entry.c:9)
-Translations of user virtual addresses above are based on a guess at
-the binary to use.  If this guess is incorrect, then those
-translations will be misleading.
+PASS

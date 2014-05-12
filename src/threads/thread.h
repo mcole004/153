@@ -102,9 +102,9 @@ struct thread
     unsigned magic;                     /* Detects stack overflow. */
 //    struct list_elem sleep_list_elem;
   //  int wake_time;
-	struct list file_list;
-	int fd;
-	struct list children;
+	struct list file_list; //make a new list of all the files
+	int fd; //file description
+	struct list children; //creates a list of a thread's children
   };
 
 /* If false (default), use round-robin scheduler.

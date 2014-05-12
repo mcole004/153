@@ -1,5 +1,5 @@
 Copying tests/filesys/base/syn-remove to scratch partition...
-qemu -hda /tmp/Pf7POp_lJ4.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/J91FVlP0Jk.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run syn-remove
@@ -23,16 +23,18 @@ Executing 'syn-remove':
 (syn-remove) create "deleteme"
 (syn-remove) open "deleteme"
 (syn-remove) remove "deleteme"
-Kernel PANIC at ../../userprog/syscall.c:82 in syscall_handler(): assertion `false' failed.
-Call stack: 0xc0028549 0xc002bf17 0xc0021a54 0xc0021b8b 0x804a463 0x8048142 0x80489f4 0x8048a20.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 257 ticks
-Thread: 0 idle ticks, 248 kernel ticks, 9 user ticks
-hda2 (filesys): 89 reads, 203 writes
+(syn-remove) write "deleteme"
+(syn-remove) seek "deleteme" to 0
+(syn-remove) read "deleteme"
+(syn-remove) close "deleteme"
+(syn-remove) end
+syn-remove: exit(0)
+Execution of 'syn-remove' complete.
+Timer: 276 ticks
+Thread: 0 idle ticks, 260 kernel ticks, 16 user ticks
+hda2 (filesys): 97 reads, 209 writes
 hda3 (scratch): 95 reads, 2 writes
-Console: 1251 characters output
+Console: 1105 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

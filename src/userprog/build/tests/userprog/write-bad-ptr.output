@@ -1,13 +1,13 @@
 Copying tests/userprog/write-bad-ptr to scratch partition...
 Copying ../../tests/userprog/sample.txt to scratch partition...
-qemu -hda /tmp/P6BLHFT1S0.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/SlPwzjxQ4D.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run write-bad-ptr
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
 383 pages available in user pool.
-Calibrating timer... 104,755,200 loops/s.
+Calibrating timer... 78,540,800 loops/s.
 hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
@@ -25,11 +25,11 @@ Executing 'write-bad-ptr':
 (write-bad-ptr) open "sample.txt"
 write-bad-ptr: exit(-1)
 Execution of 'write-bad-ptr' complete.
-Timer: 240 ticks
-Thread: 0 idle ticks, 239 kernel ticks, 1 user ticks
+Timer: 256 ticks
+Thread: 0 idle ticks, 255 kernel ticks, 1 user ticks
 hda2 (filesys): 92 reads, 194 writes
 hda3 (scratch): 93 reads, 2 writes
-Console: 972 characters output
+Console: 971 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

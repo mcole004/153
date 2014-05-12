@@ -470,7 +470,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->magic = THREAD_MAGIC;
   list_push_back (&all_list, &t->allelem);
-	list_init(&t->file_list);
+	list_init(&t->file_list); //INITIALIZES THE FILE_LIST
 	t->fd = 2;	
 }
 
@@ -588,18 +588,18 @@ allocate_tid (void)
  * Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
-struct thread* thread_check(tid_t p)
+struct thread* thread_check(tid_t p) //traverses the list of all existing threads
 {
 	struct list_elem *e;
 	for(e = list_begin(&all_list); e != list_end(&all_list); e = list_next(e))
 	{
-		struct thread *t = list_entry(e, struct thread, allelem);
-		if(t->tid == p)
+		struct thread *t = list_entry(e, struct thread, allelem); 
+		if(t->tid == p) //if the thread has the same PID as the one passed in (p) then stop traversing and pass the *thread back.
 		{
 			return  t;
 		}
 	}
-	return NULL;
+	return NULL; //the thread with the PID p does not exist
 }
 
 
