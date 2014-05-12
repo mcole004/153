@@ -28,22 +28,26 @@ github.com
 >> A1: Copy here the declaration of each new or changed `struct' or
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
-process_file
-lock
-thread
+none
 ---- ALGORITHMS ----
 
 >> A2: Briefly describe how you implemented argument parsing.  How do
 >> you arrange for the elements of argv[] to be in the right order?
 >> How do you avoid overflowing the stack page?
 
+In setup_stck(), we used 2 different stack arrays. One collected the values in reverse order so we just used a forloop to put the correct order in argv.
+
 ---- RATIONALE ----
 
 >> A3: Why does Pintos implement strtok_r() but not strtok()?
+strtok() returns the start of the string, strtok_r() returns the position of where the token ends
 
 >> A4: In Pintos, the kernel separates commands into a executable name
 >> and arguments.  In Unix-like systems, the shell does this
 >> separation.  Identify at least two advantages of the Unix approach.
+
+It is cleaner and easier to understand
+easier to call upon
 
 			     SYSTEM CALLS
 			     ============
@@ -54,9 +58,17 @@ thread
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
+process_file puts files into a list of all processes
+lock prevents interrupts
+thread added the global variables below
+LOADED_THREAD equals 1. Thread ld status checks this and FAILED to see if it has been loaded or not.
+FAILED equals 0.  
+VADDR_CHECK checks to see if the vaddr pointer is a valid pointer.
+
 >> B2: Describe how file descriptors are associated with open files.
 >> Are file descriptors unique within the entire OS or just within a
 >> single process?
+single process. Process opens file and file description stucture appends to  the thread.
 
 ---- ALGORITHMS ----
 
@@ -123,16 +135,18 @@ the quarter.
 
 >> In your opinion, was this assignment, or any one of the three problems
 >> in it, too easy or too hard?  Did it take too long or too little time?
+Too hard. I (Christine) wasn't really sure where to start. I think the project description is too hard to read for me. Luckily I had friends who helped me understand what to do.
 
 >> Did you find that working on a particular part of the assignment gave
 >> you greater insight into some aspect of OS design?
+Yes.
 
 >> Is there some particular fact or hint we should give students in
 >> future quarters to help them solve the problems?  Conversely, did you
 >> find any of our guidance to be misleading?
-
+Can you add more visual guidance on the project description? I struggle with walls of text.
 >> Do you have any suggestions for the TAs to more effectively assist
 >> students, either for future quarters or the remaining projects?
-
+Please stop blindly copying from github and giving them to us. The github solutions had several errors.
 >> Any other comments?
 
