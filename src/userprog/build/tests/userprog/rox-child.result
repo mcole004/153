@@ -1,6 +1,6 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b8d3 0xc002bdfd 0xc0021a54 0xc0021b8b 0x804a28e 0x804816b 0x8048234 0x8048878
+Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b9a0 0xc002be0d 0xc0021a54 0xc0021b8b 0x804a28e 0x804816b 0x8048234 0x8048878
 Translation of call stack:
 In kernel.o:
 0xc0028549: debug_panic (.../../lib/kernel/debug.c:38)
@@ -10,8 +10,8 @@ In kernel.o:
 0xc0021b8b: intr_entry (threads/intr-stubs.S:38)
 0xc00276d3: strtok_r (...ld/../../lib/string.c:269)
 0xc002a51a: process_execute (.../../userprog/process.c:49)
-0xc002b8d3: exec (...../userprog/syscall.c:193)
-0xc002bdfd: syscall_handler (.../../userprog/syscall.c:66)
+0xc002b9a0: exec (...../userprog/syscall.c:193)
+0xc002be0d: syscall_handler (.../../userprog/syscall.c:65)
 0xc0021a54: intr_handler (..../threads/interrupt.c:367)
 0xc0021b8b: intr_entry (threads/intr-stubs.S:38)
 In tests/userprog/rox-child:

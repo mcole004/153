@@ -1,13 +1,13 @@
 Copying tests/userprog/rox-child to scratch partition...
 Copying tests/userprog/child-rox to scratch partition...
-qemu -hda /tmp/8SqEC2s8Bj.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/7PyV0Zw_rn.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run rox-child
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
 383 pages available in user pool.
-Calibrating timer... 104,755,200 loops/s.
+Calibrating timer... 78,540,800 loops/s.
 hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
@@ -33,15 +33,15 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc00276d3
  esi=0804a8b4 edi=c00309fd esp=c00309fd ebp=c010aed4
  cs=0008 ds=0010 es=0010 ss=0020
 Kernel PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b8d3 0xc002bdfd 0xc0021a54 0xc0021b8b 0x804a28e 0x804816b 0x8048234 0x8048878.
+Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b9a0 0xc002be0d 0xc0021a54 0xc0021b8b 0x804a28e 0x804816b 0x8048234 0x8048878.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 506 ticks
-Thread: 0 idle ticks, 501 kernel ticks, 5 user ticks
+Timer: 444 ticks
+Thread: 0 idle ticks, 440 kernel ticks, 4 user ticks
 hda2 (filesys): 94 reads, 395 writes
 hda3 (scratch): 193 reads, 2 writes
-Console: 1717 characters output
+Console: 1716 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

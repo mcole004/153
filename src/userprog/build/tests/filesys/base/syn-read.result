@@ -1,2 +1,2 @@
 FAIL
-run: wait for child 2 of 10 returned -858993460 (expected 1): FAILED
+run: wait for child 1 of 10 returned -858993460 (expected 0): FAILED

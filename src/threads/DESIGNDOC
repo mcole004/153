@@ -1,13 +1,13 @@
-S 153      |
-			| PROJECT 1: THREADS |
-			|   DESIGN DOCUMENT  |
-			+--------------------+
-				   
+S 153         |
+			| PROJECT 2: USER PROGRAMS |
+			| 	   DESIGN DOCUMENT     |
+			+--------------------------+
+
 ---- GROUP ----
 
 >> Fill in the names and email addresses of your group members.
 
-Christine Hawley  <chawl002@ucr.edu>
+Christine Hawley <chawl002@ucr.edu>
 Michael Cole <mcole004@ucr.edu>
 
 ---- PRELIMINARIES ----
@@ -18,52 +18,35 @@ Michael Cole <mcole004@ucr.edu>
 >> Please cite any offline or online sources you consulted while
 >> preparing your submission, other than the Pintos documentation, course
 >> text, lecture notes, and course staff.
+github.com
 
-			     ALARM CLOCK
-			     ===========
+			   ARGUMENT PASSING
+			   ================
 
 ---- DATA STRUCTURES ----
 
 >> A1: Copy here the declaration of each new or changed `struct' or
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
-
-Added in a sleeping_list() to put all the blocked threads in.
-Added in a ready_list() to put all unblocked threads in
-
+process_file
+lock
+thread
 ---- ALGORITHMS ----
 
->> A2: Briefly describe what happens in a call to timer_sleep(),
->> including the effects of the timer interrupt handler.
-
-The function waits for the amount of ticks passed in the parameter.
-
->> A3: What steps are taken to minimize the amount of time spent in
->> the timer interrupt handler?
-
-None
-
----- SYNCHRONIZATION ----
-
->> A4: How are race conditions avoided when multiple threads call
->> timer_sleep() simultaneously?
-
-They are put in an array for the amount of time it takes to complete a task.
-
->> A5: How are race conditions avoided when a timer interrupt occurs
->> during a call to timer_sleep()?
-
-Interups are disabled.
+>> A2: Briefly describe how you implemented argument parsing.  How do
+>> you arrange for the elements of argv[] to be in the right order?
+>> How do you avoid overflowing the stack page?
 
 ---- RATIONALE ----
 
->> A6: Why did you choose this design?  In what ways is it superior to
->> another design you considered?
+>> A3: Why does Pintos implement strtok_r() but not strtok()?
 
-I don't really know. 
+>> A4: In Pintos, the kernel separates commands into a executable name
+>> and arguments.  In Unix-like systems, the shell does this
+>> separation.  Identify at least two advantages of the Unix approach.
 
-			 PRIORITY SCHEDULING
-			 ===================
+			     SYSTEM CALLS
+			     ============
 
 ---- DATA STRUCTURES ----
 
@@ -71,35 +54,63 @@ I don't really know.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
-I couldn't get this to work.
-
->> B2: Explain the data structure used to track priority donation.
->> Use ASCII art to diagram a nested donation.  (Alternately, submit a
->> .png file.)
-
-N/A
+>> B2: Describe how file descriptors are associated with open files.
+>> Are file descriptors unique within the entire OS or just within a
+>> single process?
 
 ---- ALGORITHMS ----
 
->> B3: How do you ensure that the highest priority thread waiting for
->> a lock, semaphore, or condition variable wakes up first?
+>> B3: Describe your code for reading and writing user data from the
+>> kernel.
 
->> B4: Describe the sequence of events when a call to lock_acquire()
->> causes a priority donation.  How is nested donation handled?
+>> B4: Suppose a system call causes a full page (4,096 bytes) of data
+>> to be copied from user space into the kernel.  What is the least
+>> and the greatest possible number of inspections of the page table
+>> (e.g. calls to pagedir_get_page()) that might result?  What about
+>> for a system call that only copies 2 bytes of data?  Is there room
+>> for improvement in these numbers, and how much?
 
->> B5: Describe the sequence of events when lock_release() is called
->> on a lock that a higher-priority thread is waiting for.
+>> B5: Briefly describe your implementation of the "wait" system call
+>> and how it interacts with process termination.
+
+>> B6: Any access to user program memory at a user-specified address
+>> can fail due to a bad pointer value.  Such accesses must cause the
+>> process to be terminated.  System calls are fraught with such
+>> accesses, e.g. a "write" system call requires reading the system
+>> call number from the user stack, then each of the call's three
+>> arguments, then an arbitrary amount of user memory, and any of
+>> these can fail at any point.  This poses a design and
+>> error-handling problem: how do you best avoid obscuring the primary
+>> function of code in a morass of error-handling?  Furthermore, when
+>> an error is detected, how do you ensure that all temporarily
+>> allocated resources (locks, buffers, etc.) are freed?  In a few
+>> paragraphs, describe the strategy or strategies you adopted for
+>> managing these issues.  Give an example.
 
 ---- SYNCHRONIZATION ----
 
->> B6: Describe a potential race in thread_set_priority() and explain
->> how your implementation avoids it.  Can you use a lock to avoid
->> this race?
+>> B7: The "exec" system call returns -1 if loading the new executable
+>> fails, so it cannot return before the new executable has completed
+>> loading.  How does your code ensure this?  How is the load
+>> success/failure status passed back to the thread that calls "exec"?
+
+>> B8: Consider parent process P with child process C.  How do you
+>> ensure proper synchronization and avoid race conditions when P
+>> calls wait(C) before C exits?  After C exits?  How do you ensure
+>> that all resources are freed in each case?  How about when P
+>> terminates without waiting, before C exits?  After C exits?  Are
+>> there any special cases?
 
 ---- RATIONALE ----
 
->> B7: Why did you choose this design?  In what ways is it superior to
->> another design you considered?
+>> B9: Why did you choose to implement access to user memory from the
+>> kernel in the way that you did?
+
+>> B10: What advantages or disadvantages can you see to your design
+>> for file descriptors?
+
+>> B11: The default tid_t to pid_t mapping is the identity mapping.
+>> If you changed it, what advantages are there to your approach?
 
 			   SURVEY QUESTIONS
 			   ================
@@ -110,23 +121,18 @@ want--these questions are just to spur your thoughts.  You may also
 choose to respond anonymously in the course evaluations at the end of
 the quarter.
 
->> In your opinion, was this assignment, or any one of the problems
+>> In your opinion, was this assignment, or any one of the three problems
 >> in it, too easy or too hard?  Did it take too long or too little time?
-
-Too Hard. I still haven't figured it out, dispite all the hours put in. I guess it was my fault that I went home, and I could not discuss it with my partner.
 
 >> Did you find that working on a particular part of the assignment gave
 >> you greater insight into some aspect of OS design?
-
-Yes, I do think so, even if I don't really understand all of it.
 
 >> Is there some particular fact or hint we should give students in
 >> future quarters to help them solve the problems?  Conversely, did you
 >> find any of our guidance to be misleading?
 
-Tell us we're not allowed to change the block/unblock (for this part of the assignment at least).
-
 >> Do you have any suggestions for the TAs to more effectively assist
 >> students, either for future quarters or the remaining projects?
 
 >> Any other comments?
+

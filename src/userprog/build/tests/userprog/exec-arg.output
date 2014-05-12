@@ -1,13 +1,13 @@
 Copying tests/userprog/exec-arg to scratch partition...
 Copying tests/userprog/child-args to scratch partition...
-qemu -hda /tmp/TVOS1Zpr3u.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/BoXZuGMVq3.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run exec-arg
 Pintos booting with 4,096 kB RAM...
 383 pages available in kernel pool.
 383 pages available in user pool.
-Calibrating timer... 78,540,800 loops/s.
+Calibrating timer... 104,755,200 loops/s.
 hda: 5,040 sectors (2 MB), model "QM00001", serial "QEMU HARDDISK"
 hda1: 147 sectors (73 kB), Pintos OS kernel (20)
 hda2: 4,096 sectors (2 MB), Pintos file system (21)
@@ -29,15 +29,15 @@ Interrupt 0x0e (#PF Page-Fault Exception) at eip=0xc00276d3
  esi=0804a726 edi=c00309fd esp=c00309fd ebp=c010aed4
  cs=0008 ds=0010 es=0010 ss=0020
 Kernel PANIC at ../../userprog/exception.c:100 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b8d3 0xc002bdfd 0xc0021a54 0xc0021b8b 0x804a13e 0x80480b2 0x80480ec 0x8048728.
+Call stack: 0xc0028549 0xc002b778 0xc002b82a 0xc0021a54 0xc0021b8b 0xc00276d3 0xc002a51a 0xc002b9a0 0xc002be0d 0xc0021a54 0xc0021b8b 0x804a13e 0x80480b2 0x80480ec 0x8048728.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 440 ticks
-Thread: 0 idle ticks, 437 kernel ticks, 3 user ticks
+Timer: 436 ticks
+Thread: 0 idle ticks, 434 kernel ticks, 2 user ticks
 hda2 (filesys): 87 reads, 368 writes
 hda3 (scratch): 180 reads, 2 writes
-Console: 1594 characters output
+Console: 1595 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

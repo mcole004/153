@@ -1,6 +1,6 @@
 Copying tests/filesys/base/syn-write to scratch partition...
 Copying tests/filesys/base/child-syn-wrt to scratch partition...
-qemu -hda /tmp/J71gwtnlDO.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/qky7fz35IG.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run syn-write
@@ -47,8 +47,8 @@ child-syn-wrt: exit(9)
 (syn-write) wait for child 1 of 10 returned -858993460 (expected 0): FAILED
 syn-write: exit(1)
 Execution of 'syn-write' complete.
-Timer: 505 ticks
-Thread: 0 idle ticks, 470 kernel ticks, 35 user ticks
+Timer: 504 ticks
+Thread: 0 idle ticks, 469 kernel ticks, 36 user ticks
 hda2 (filesys): 521 reads, 428 writes
 hda3 (scratch): 198 reads, 2 writes
 Console: 1822 characters output

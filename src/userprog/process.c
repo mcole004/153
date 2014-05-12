@@ -73,15 +73,14 @@ file_name = strtok_r((char*)file_name, " ", &saveptr);
   if_.eflags = FLAG_IF | FLAG_MBS;
   success = load (file_name, &if_.eip, &if_.esp, &saveptr);
 //////////////////////////////////////
-						//this is for child processes 
-/* if(success)
+ if(success)
 	{
-	thread_current()->load = LOADED; /////childproccess?
+	thread_current()->ld = LOADED_THREAD; 
 	}
 else
 {
-	thread_current()->load = FAILED;
-}*/
+	thread_current()->ld = FAILED;
+}
 //////////////////////////////////
   /* If load failed, quit. */
   palloc_free_page (file_name);
@@ -283,7 +282,8 @@ load (const char *file_name, void (**eip) (void), void **esp, char **saveptr)
       goto done; 
     }
 
-  int i;
+  int i; 
+  bool loaded = false;
   /* Read program headers. */
   file_ofs = ehdr.e_phoff;
   for (i = 0; i < ehdr.e_phnum; i++) 
@@ -343,7 +343,6 @@ load (const char *file_name, void (**eip) (void), void **esp, char **saveptr)
         }
     }
 
-  bool loaded = false;
   /* Set up stack. */
   if (!setup_stack (esp, file_name, saveptr))
     goto done;

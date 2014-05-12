@@ -62,7 +62,6 @@ syscall_handler (struct intr_frame *f)
 			//arg[1] = user_to_kernel_ptr((const void *) arg[1]);
 			//f->eax = exec((char *) arg[1]);
 			get_arguments(f, &arg[0], 1);
-			//check_string((const void*)argv[o]);
 			f->eax = exec((const char *)arg[0]);
 			break;
                 case SYS_WRITE:
@@ -187,6 +186,7 @@ void exit (int status)
 }
 pid_t exec (const char *cmd_line)
 {
+	check_address(cmd_line);
 	pid_t pid = process_execute(cmd_line);
 	
 	return pid;
@@ -312,7 +312,7 @@ unsigned tell (int file_description)
 void close(int file_name)
 {
 //	struct file *f =  process_get_file(file_description);
-	if(file_name == NULL)
+	if(file_name == 0)
 	{
 		exit(-1);
 	}	
@@ -333,7 +333,8 @@ void get_arguments(struct intr_frame *frame, int *argument, int number)
 }
 void check_address(const void *vaddr)
 {
-	if (vaddr == NULL || vaddr <  ((void *) 0x08048000) || !is_user_vaddr(vaddr))
+	#define VADDR_CHECK ((void *) 0x08048000)
+	if (vaddr <  VADDR_CHECK  || !is_user_vaddr(vaddr))
 	{	
 		exit(-1);
 	}

@@ -4,6 +4,8 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
+#define LOADED_THREAD  1;
+#define FAILED  0;
 
 /* States in a thread's life cycle. */
 enum thread_status
@@ -11,7 +13,9 @@ enum thread_status
     THREAD_RUNNING,     /* Running thread. */
     THREAD_READY,       /* Not running but ready to run. */
     THREAD_BLOCKED,     /* Waiting for an event to trigger. */
-    THREAD_DYING        /* About to be destroyed. */
+    THREAD_DYING,        /* About to be destroyed. */
+  //  LOADED,
+    //FAILED
   };
 
 /* Thread identifier type.
@@ -85,6 +89,7 @@ struct thread
     /* Owned by thread.c. */
     tid_t tid;                          /* Thread identifier. */
     enum thread_status status;          /* Thread state. */
+	enum thread_status ld;
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
