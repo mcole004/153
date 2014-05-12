@@ -1,5 +1,5 @@
 Copying tests/userprog/sc-boundary to scratch partition...
-qemu -hda /tmp/RHxbYrrDop.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/fLN28rGNsX.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run sc-boundary
@@ -22,8 +22,8 @@ Executing 'sc-boundary':
 (sc-boundary) begin
 sc-boundary: exit(42)
 Execution of 'sc-boundary' complete.
-Timer: 271 ticks
-Thread: 0 idle ticks, 270 kernel ticks, 1 user ticks
+Timer: 262 ticks
+Thread: 0 idle ticks, 261 kernel ticks, 1 user ticks
 hda2 (filesys): 63 reads, 194 writes
 hda3 (scratch): 94 reads, 2 writes
 Console: 881 characters output

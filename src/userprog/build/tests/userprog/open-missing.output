@@ -1,5 +1,5 @@
 Copying tests/userprog/open-missing to scratch partition...
-qemu -hda /tmp/DEw2ZHVp87.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/DxIksiGPm1.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run open-missing
@@ -23,8 +23,8 @@ Executing 'open-missing':
 (open-missing) end
 open-missing: exit(0)
 Execution of 'open-missing' complete.
-Timer: 249 ticks
-Thread: 0 idle ticks, 248 kernel ticks, 1 user ticks
+Timer: 252 ticks
+Thread: 0 idle ticks, 251 kernel ticks, 1 user ticks
 hda2 (filesys): 80 reads, 188 writes
 hda3 (scratch): 91 reads, 2 writes
 Console: 905 characters output

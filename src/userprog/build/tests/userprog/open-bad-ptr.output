@@ -1,5 +1,5 @@
 Copying tests/userprog/open-bad-ptr to scratch partition...
-qemu -hda /tmp/uowx78ZJEr.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/uOvPA0ysky.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run open-bad-ptr
@@ -22,8 +22,8 @@ Executing 'open-bad-ptr':
 (open-bad-ptr) begin
 open-bad-ptr: exit(-1)
 Execution of 'open-bad-ptr' complete.
-Timer: 251 ticks
-Thread: 0 idle ticks, 250 kernel ticks, 1 user ticks
+Timer: 255 ticks
+Thread: 0 idle ticks, 255 kernel ticks, 0 user ticks
 hda2 (filesys): 63 reads, 188 writes
 hda3 (scratch): 91 reads, 2 writes
 Console: 887 characters output

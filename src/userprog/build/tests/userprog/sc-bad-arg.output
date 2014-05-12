@@ -1,5 +1,5 @@
 Copying tests/userprog/sc-bad-arg to scratch partition...
-qemu -hda /tmp/9TSPQZbqXs.dsk -m 4 -net none -nographic -monitor null
+qemu -hda /tmp/lhjF4etoKX.dsk -m 4 -net none -nographic -monitor null
 PiLo hda1
 Loading.........
 Kernel command line: -q -f extract run sc-bad-arg
@@ -22,8 +22,8 @@ Executing 'sc-bad-arg':
 (sc-bad-arg) begin
 sc-bad-arg: exit(-1)
 Execution of 'sc-bad-arg' complete.
-Timer: 250 ticks
-Thread: 0 idle ticks, 249 kernel ticks, 1 user ticks
+Timer: 249 ticks
+Thread: 0 idle ticks, 248 kernel ticks, 1 user ticks
 hda2 (filesys): 63 reads, 188 writes
 hda3 (scratch): 91 reads, 2 writes
 Console: 875 characters output

@@ -22,12 +22,11 @@ int process_add_file(struct file *f);
 struct file* process_get_file(int fd);
 void process_close_file(int fd);
 
-struct lock file_locked; // dis/enables interrupts
-
 void check_address(const void *vaddr);//checks if pointers are valid
 void check_buffer(void* buf, unsigned size); //checks if the buffer is valid
 void get_arguments(struct intr_frame *frame, int *argument, int number);  //parses through the argument stack
 
+struct lock file_locked; // dis/enables interrupts
 struct process_file 
 {	
 	struct file *file;
@@ -56,7 +55,6 @@ syscall_handler (struct intr_frame *f)
 		case SYS_EXIT:
 			get_arguments(f, &arg[0], 1);			
 			exit(arg[0]);
-			//exit(arg[1]);
 			break;
 		case SYS_EXEC:
 			//arg[1] = user_to_kernel_ptr((const void *) arg[1]);
@@ -64,16 +62,25 @@ syscall_handler (struct intr_frame *f)
 			get_arguments(f, &arg[0], 1);
 			f->eax = exec((const char *)arg[0]);
 			break;
-                case SYS_WRITE:
-                        //arg[0] = user_to_kernel_ptr((const void *)arg[0]);
-                        get_arguments(f, &arg[0], 3);
-			check_buffer((void *)arg[1], (unsigned) arg[2]);
-			arg[1] = user_to_kernel_ptr((const void *) arg[1]);
-			f->eax = write(arg[0], (const void*)arg[1], (unsigned) arg[2]);	
-                        break;
 		case SYS_WAIT:
 			get_arguments(f, &arg[0], 1);
 			f->eax = wait(arg[0]);
+			break;
+		case SYS_FILESIZE:
+			get_arguments(f, &arg[0], 1);
+			f->eax =filesize( arg[0]);
+			break;
+		case SYS_SEEK:
+			get_arguments(f, &arg[0], 2);
+			seek(arg[0], (unsigned) arg[1]);
+			break;
+		case SYS_TELL:
+			get_arguments(f, &arg[0], 1);
+			f->eax =tell(arg[0]);
+			break;
+		case SYS_CLOSE:
+			get_arguments(f, &arg[0], 1);
+			close(arg[0]);
 			break;
 		case SYS_CREATE:
 			get_arguments(f, &arg[0], 2);
@@ -90,31 +97,22 @@ syscall_handler (struct intr_frame *f)
 			arg[0] = user_to_kernel_ptr((const void *)arg[0]);
 			f->eax =open((char *) arg[0]);
 			break;
-		case SYS_FILESIZE:
-			get_arguments(f, &arg[0], 1);
-			f->eax =filesize( arg[0]);
-			break;
 		case SYS_READ:
 			get_arguments(f, &arg[0], 3);
 			check_buffer((void *)arg[1], (unsigned) arg[2]);
 			arg[1] = user_to_kernel_ptr((const void *)arg[1]);
 			f->eax =read(arg[0], (void*)arg[1], (unsigned) arg[2]);
 			break;
-		case SYS_SEEK:
-			get_arguments(f, &arg[0], 2);
-			seek(arg[0], (unsigned) arg[1]);
-			break;
-		case SYS_TELL:
-			get_arguments(f, &arg[0], 1);
-			f->eax =tell(arg[0]);
-			break;
-		case SYS_CLOSE:
-			get_arguments(f, &arg[0], 1);
-			close(arg[0]);
-			break;
+                case SYS_WRITE:
+                        //arg[0] = user_to_kernel_ptr((const void *)arg[0]);
+                        get_arguments(f, &arg[0], 3);
+			check_buffer((void *)arg[1], (unsigned) arg[2]);
+			arg[1] = user_to_kernel_ptr((const void *) arg[1]);
+			f->eax = write(arg[0], (const void*)arg[1], (unsigned) arg[2]);	
+                        break;
 	}
 }
-
+/////////////////////////////////////////////HELPER FUNCTIONS
 int user_to_kernel_ptr(const void *vaddr)
 {
 	check_address(vaddr);
@@ -151,7 +149,6 @@ int process_add_file(struct file *f)
 
 void process_close_file(int fd)
 {
-	//DOES NOT FIX THE ERROR WHERE THE FILE CLOSES TWICE
 	struct thread *t = thread_current();
 	struct list_elem *next, *e = list_begin(&t->file_list);
 	while (e != list_end (&t->file_list)) //traverses the list of all files to find the right one to close
@@ -171,10 +168,43 @@ void process_close_file(int fd)
 		 e = next;
 	}
 }
-
+void get_arguments(struct intr_frame *frame, int *argument, int number)
+{
+	int i, *ptr;
+	for(i = 0; i < number; i++)
+	{
+		ptr = (int *) frame->esp + i + 1;
+		check_address((const void *) ptr);
+		argument[i] = *ptr;
+	}
+}
+void check_address(const void *vaddr)
+{
+	#define VADDR_CHECK ((void *) 0x08048000)
+	if (vaddr <  VADDR_CHECK  || !is_user_vaddr(vaddr))
+	{	
+		exit(-1);
+	}
+}
+void check_buffer(void* buf, unsigned size)
+{
+	unsigned i;
+	char* local_buffer = (char*) buf;
+	for(i=0; i<size; i++)
+	{
+		check_address((const void*) local_buffer);
+		local_buffer++;
+	}
+}
+////////////////////////////////////////////////////////////////////SYSCALLS
 void halt(void)
 {
 	shutdown_power_off();
+}
+
+int wait (pid_t pid)
+{
+	return process_wait(pid);
 }
 
 void exit (int status)
@@ -191,42 +221,6 @@ pid_t exec (const char *cmd_line)
 	
 	return pid;
 }
-int open(const char *file)
-{
-	lock_acquire(&file_locked);
-	struct file *f = filesys_open(file); //located in src/filesys/filesys.c //opens if the file exists, otherwise returns NULL
-	if(!f) //if the file does not open
-	{
-		lock_release(&file_locked);
-		return -1;
-	}
-	int file_description = process_add_file(f); //adds file to the list of processes
-	lock_release(&file_locked);
-	return file_description;
-}
-int write (int file_description, const void *buffer, unsigned size)
-{
-	if(file_description == STDOUT_FILENO)
-	{
-		putbuf(buffer, size);//located in kernel console.c //writes the chacters in *buffer with the number of size into the buffer
-		return size;
-	}
-	lock_acquire(&file_locked);
-	struct file *f = process_get_file(file_description); //finds the file you want to write to
-	if(!f) //if the file does not exist, do nothing
-	{
-		lock_release(&file_locked);
-		return -1;
-	}
-	int written =  file_write(f, buffer, size); //located in src/filesys/file.c //returns number of bytes written to file. This might be smaller than size
-	lock_release(&file_locked);
-	return written;
-}
-
-int wait (pid_t pid)
-{
-	return process_wait(pid);
-}
 bool create(const char *file, unsigned initial_size)
 {
 	lock_acquire(&file_locked);
@@ -241,6 +235,32 @@ bool remove(const char *file)
 	lock_release(&file_locked);
 	return removed;
 }
+int open(const char *file)
+{
+	lock_acquire(&file_locked);
+	struct file *f = filesys_open(file); //located in src/filesys/filesys.c //opens if the file exists, otherwise returns NULL
+	if(!f) //if the file does not open
+	{
+		lock_release(&file_locked);
+		return -1;
+	}
+	int file_description = process_add_file(f); //adds file to the list of processes
+	lock_release(&file_locked);
+	return file_description;
+}
+void close(int file_name)
+{
+//	struct file *f =  process_get_file(file_description);
+	if(file_name == 0)
+	{
+		exit(-1);
+	}	
+	
+	lock_acquire(&file_locked);
+	process_close_file(file_name);
+	lock_release(&file_locked);
+}
+
 int filesize(int fd)
 {
 	lock_acquire(&file_locked);
@@ -254,32 +274,7 @@ int filesize(int fd)
 	lock_release(&file_locked);
 	return size;
 }
-int read(int fd, void *buffer, unsigned size)
-{
-	lock_acquire(&file_locked);
-	struct file *f = process_get_file(fd);
-	if(!f)//if file does not exist
-	{
-		lock_release(&file_locked);
-		return -1;
-	}	
-	if(fd == STDIN_FILENO)//in stdio.h //stdin_fileno == 0
-	{
-		unsigned i;
-		uint8_t* local_buffer = (uint8_t*)buffer;
-		
-		for(i = 0; i < size; i++)
-		{
-			local_buffer[i] = input_getc();
-		}
-		lock_release(&file_locked);
-		return size;	
-	}	
-	int reading = file_read(f, buffer, size);
-	
-	lock_release(&file_locked);
-	return reading;
-}
+
 
 void seek (int file_description, unsigned position)
 {	
@@ -309,43 +304,50 @@ unsigned tell (int file_description)
 	return position;
 	
 }
-void close(int file_name)
+
+int write (int file_description, const void *buffer, unsigned size)
 {
-//	struct file *f =  process_get_file(file_description);
-	if(file_name == 0)
-	{
-		exit(-1);
-	}	
-	
 	lock_acquire(&file_locked);
-	process_close_file(file_name);
+	if(file_description == STDOUT_FILENO)
+	{
+		putbuf(buffer, size);//located in kernel console.c //writes the chacters in *buffer with the number of size into the buffer
+		lock_release(&file_locked);
+		return size;
+	}
+	struct file *f = process_get_file(file_description); //finds the file you want to write to
+	if(!f) //if the file does not exist, do nothing
+	{
+		lock_release(&file_locked);
+		return -1;
+	}
+	int written =  file_write(f, buffer, size); //located in src/filesys/file.c //returns number of bytes written to file. This might be smaller than size
 	lock_release(&file_locked);
+	return written;
 }
-void get_arguments(struct intr_frame *frame, int *argument, int number)
+
+int read(int fd, void *buffer, unsigned size)
 {
-	int i, *ptr;
-	for(i = 0; i < number; i++)
+	lock_acquire(&file_locked);
+	struct file *f = process_get_file(fd);
+	if(!f)//if file does not exist
 	{
-		ptr = (int *) frame->esp + i + 1;
-		check_address((const void *) ptr);
-		argument[i] = *ptr;
-	}
-}
-void check_address(const void *vaddr)
-{
-	#define VADDR_CHECK ((void *) 0x08048000)
-	if (vaddr <  VADDR_CHECK  || !is_user_vaddr(vaddr))
-	{	
-		exit(-1);
-	}
-}
-void check_buffer(void* buf, unsigned size)
-{
-	unsigned i;
-	char* local_buffer = (char*) buf;
-	for(i=0; i<size; i++)
+		lock_release(&file_locked);
+		return -1;
+	}	
+	if(fd == STDIN_FILENO)//in stdio.h //stdin_fileno == 0
 	{
-		check_address((const void*) local_buffer);
-		local_buffer++;
-	}
+		unsigned i;
+		uint8_t* local_buffer = (uint8_t*)buffer;
+		
+		for(i = 0; i < size; i++)
+		{
+			local_buffer[i] = input_getc();
+		}
+		lock_release(&file_locked);
+		return size;	
+	}	
+	int reading = file_read(f, buffer, size);
+	
+	lock_release(&file_locked);
+	return reading;
 }
